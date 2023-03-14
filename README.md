@@ -32,7 +32,7 @@ importer_rules_manager.register_rules(
 )
 ```
 
-Then you would in an `init_unreal.py` somewhere in your python folders in project or plugin can import your module and the rules will get registered.
+Then in an `init_unreal.py` a /python/ folder import the module and the rules will get registered.
 
 ### Example File
 
