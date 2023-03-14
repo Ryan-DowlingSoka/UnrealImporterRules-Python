@@ -1,0 +1,17 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "ImporterRules",
+	"Description": "Example project showing how to do rules based import settings to assets from python.",
+	"Category": "Other",
+	"CreatedBy": "Ryan DowlingSoka",
+	"CreatedByURL": "https://ryandowlingsoka.com",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false
+}

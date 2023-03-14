@@ -1,0 +1,7 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        "..\\..\\..\\..\\Intermediate\\PythonStub"
+    ],
+    "python.defaultInterpreterPath": "E:\\epic\\UE_5.1\\Engine\\Binaries\\ThirdParty\\Python3\\Win64\\python.exe"
+}
