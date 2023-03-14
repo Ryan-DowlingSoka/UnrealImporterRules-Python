@@ -34,6 +34,8 @@ importer_rules_manager.register_rules(
 
 Then in an `init_unreal.py` a /python/ folder import the module and the rules will get registered.
 
+> If you wish to try out the example file, you can uncomment the include in the plugin's init_unreal.py
+
 ### Example File
 
 This example file shows a simple set of rules applying to imported assets of the type: "Texture2D"
