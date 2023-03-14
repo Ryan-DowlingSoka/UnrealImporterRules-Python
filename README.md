@@ -34,18 +34,20 @@ importer_rules_manager.register_rules(
 
 Then you would in an `init_unreal.py` somewhere in your python folders in project or plugin can import your module and the rules will get registered.
 
-Lets take a look at an example file.
+### Example File
 
 This example file shows a simple set of rules applying to imported assets of the type: "Texture2D"
 By importing this module in an init_unreal these rules will get applied to any newly imported assets.
 
 First we need to import the importer rules related classes and unreal for the class type.
+
 ```python
 from ImporterRules import *
 import unreal
 ```
 
 The importer_rules_manager handles the post_import delegate. So we register_rules through that. The first argument is the type of classes that these rules should be applied to.
+
 ```python
 importer_rules_manager.register_rules(
     class_type = unreal.Texture2D,
@@ -67,7 +69,7 @@ There is only one rule, so the requires_all parameter is irrelevant.
         ),
 ```
 
-This second rule shows how you can put several queries together. Because the requires_all parameter is 'False' this rule will fire if ANY of the source path queries are true. So if the texture ends with _n, _o, _h, _r, _m then this rule will remove the sRGB property from those textures.
+This second rule shows how you can put several queries together. Because the requires_all parameter is 'False' this rule will fire if ANY of the source path queries are true. So if the texture ends with `_n, _o, _h, _r, _m` then this rule will remove the sRGB property from those textures.
 
 ```python
         Rule(
@@ -83,7 +85,7 @@ This second rule shows how you can put several queries together. Because the req
         ),
 ```
 
-The third rule is targeting more specifically. While the previous rules have been requires_all = False, this rule is True so now both the SourcePath and DestinationPath queries must come back true for the action to be applied. In this example the texture must have the suffix _d and be in a folder named /TestFolder/ somewhere in its path hierarchy to pass. You can see that the SetEditorProperties takes two property names as well.
+The third rule is targeting more specifically. While the previous rules have been requires_all = False, this rule is True so now both the SourcePath and DestinationPath queries must come back true for the action to be applied. In this example the texture must have the suffix `_d` and be in a folder named /TestFolder/ somewhere in its path hierarchy to pass. You can see that the SetEditorProperties takes two property names as well.
 
 ```python
         Rule(
@@ -182,3 +184,5 @@ If you'd like to build your own system you could either bind your rules directly
 * The Unreal Python Path is set at each `/Python/` folder in each plugin and the project. As such, modules inside of modules such as `/Python/ImporterRules/.../` folders need to reference their siblings with `import ImporterRules.{{ModuleName}}`
 
 * The `ImporterRules` imports all the queries and action classes, so you can use `from ImporterRules import *` as a handy shorthand to get the classes you need. If you make additional queries or actions, you should either put them in this file or just remember to import them manually.
+
+* This tutorial was made for `#notGDC 2023`! Check out some other great entries at [https://notgdc.io](https://notgdc.io)
