@@ -22,7 +22,7 @@
 
 from abc import ABC
 import unreal
-from typing import List, cast
+from typing import List, cast, Any
 import os.path
 
 
@@ -135,6 +135,32 @@ class DestinationPath(QueryBase):
             return self.destination_path_contains in destination_path
 
         return False
+
+class CheckAssetTag(QueryBase):
+
+    """Query based on the asset tags of the created object. Optional asset_tag_value parameter will do a string equality compare.
+       If left empty, then the test will only look to see if the tag exists."""
+
+    def __init__(
+        self,
+        asset_tag_key:str,
+        asset_tag_value:Any = None,
+    ) -> None:
+        self.asset_tag_key = asset_tag_key
+        self.asset_tag_value = asset_tag_value
+
+    def test(self, factory: unreal.Factory, created_object: unreal.Object) -> bool:
+        if created_object is None:
+            return False
+        
+        eas = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
+        if eas:
+            value = eas.get_metadata_tag(created_object, self.asset_tag_key)
+            if value == "":
+                return False
+            return self.asset_tag_value is None or str(self.asset_tag_value) == value
+        return False
+
 
 
 def has_editor_property(created_object: unreal.Object, editor_property: str) -> bool:

@@ -72,13 +72,16 @@ importer_rules_manager.register_rules(
 
         # This rule is similar to the previous, but the SetEditorProperties has been broken up into two actions, just like queries
         # you aren't limited to one action at a time.
+        # In addition, this rule has the apply_on_reimport parameter set to True: which will cause this rule to run each time the
+        # asset is reimported, and not just the first time.
         Rule(
             queries=[
                 SourcePath(file_name_ends_with="_test"),
                 DestinationPath(path_contains="/TestFolder/"),
             ],
             actions=[SetEditorProperties(srgb=False), SetAssetTags({"obsolete":True})],
-            requires_all=True
+            requires_all=True,
+            apply_on_reimport=True,
         ),
     ],
 )

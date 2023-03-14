@@ -145,9 +145,9 @@ The first 4 parameters are tests on the file name or path. The fifth is a list o
 
 These queries are then instantiated in the `queries` parameter of a `Rule`
 
-Other types of queries you could choose to complete might be tests on specific data in the asset. For example, `.fbx` files can have `MetadataTags` that can get created by software like Maya and saved into the files. You could create a `MetadataTags` query looking for particular metadata tags that are created at import time, and do specific actions based on whether or not that tag exists.
+Other types of queries you could choose to complete might be tests on specific data in the asset. For example, `.fbx` files can have `MetadataTags` that can get created by software like Maya and saved into the files. You can use the `CheckAssetTag` query looking for particular metadata tags that are created at import time, and do specific actions based on whether or not that tag exists.
 
-Complex boolean groupings like `query1 and query2 but not query3` aren't supported by the framework, buy could be done so easily by creating a `AND` or `OR` set of composite queries that could *wrap* other queries. 
+Complex boolean groupings like `query1 and query2 but not query3` aren't supported by the framework, buy could be done so easily by creating a `AND` or `OR` set of composite queries that could *wrap* other queries.
 
 ### Actions
 
@@ -160,6 +160,38 @@ For example the `Actions.SetEditorProperties` can apply any amount of EditorProp
 To create your own actions you simply need to inherit from `ImportActionBase` and implement the `def apply(self, factory: unreal.Factory, created_object: unreal.Object) -> bool:` function. This function should return `True` if successful, but note that the entire `apply` action is wrapped in a `try: except:` block.
 
 As before you should use the `__init__` definition to create member variables for action configuration in most cases.
+
+#### Actions.SetEditorProperties(**kwargs)
+
+This is the most generic included action. Pass in any editor properties as parameter values. For example, for a texture you might pass in:
+
+```SetEditorProperties(srgb=True)```
+
+The naming of the editor properties that are available for a given class can by found in the stub definition of the unreal class. For example:
+
+```text
+Texture 2D
+
+**C++ Source:**
+
+- **Module**: Engine
+- **File**: Texture2D.h
+
+**Editor Properties:** (see get_editor_property/set_editor_property)
+
+- ``address_x`` (TextureAddress):  [Read-Write] Address X:
+    The addressing mode to use for the X axis.
+- ``address_y`` (TextureAddress):  [Read-Write] Address Y:
+    The addressing mode to use for the Y axis.
+- ``adjust_brightness`` (float):  [Read-Write] Adjust Brightness:
+    Static texture brightness adjustment (scales HSV value.)  (Non-destructive; Requires texture source art to be available.)
+```
+
+This action will fail if the target does not have the given property name or if the value is the wrong type.
+
+#### Actions.SetAssetTags({TagKey:TagValue})
+
+This action is for setting asset tags on import. It takes a dictionary of `str:Any` but be aware it runs `str()` on the value, so only types that can be cast to `str()` will be valid.
 
 ### Rules
 
@@ -184,5 +216,7 @@ If you'd like to build your own system you could either bind your rules directly
 * The Unreal Python Path is set at each `/Python/` folder in each plugin and the project. As such, modules inside of modules such as `/Python/ImporterRules/.../` folders need to reference their siblings with `import ImporterRules.{{ModuleName}}`
 
 * The `ImporterRules` imports all the queries and action classes, so you can use `from ImporterRules import *` as a handy shorthand to get the classes you need. If you make additional queries or actions, you should either put them in this file or just remember to import them manually.
+
+* (Re)importing. All of the delegates related to importing in Unreal happen for reimporting too. You most likely don't want your rules to apply to assets that have already had the rules applied to them, so we need to detect if the current import is a reimport. There are two possible patterns for this: The first is to bind to pre-import, calculate what objects will be generated and if those packages already exist. This is a bummer because factories can do some pretty intense logic to determine what the names of the newly imported objects will be. The second (what this example project does) is to assign a MetadataTag to the asset if it has had rules applied to it already, and then rules can opt in to running despite if that tag exists. This second way is easier to implement, *but* does mean that reimporting existing assets from before when the plugin was created will have those rules applied. This might be beneficial in some cases, but do be careful. If you wanted to prevent that, you could run the `import_rules_manager._set_imported_asset_tag_action.apply()` function on all the assets in your content library as part of the installation process.
 
 * This tutorial was made for `#notGDC 2023`! Check out some other great entries at [https://notgdc.io](https://notgdc.io)

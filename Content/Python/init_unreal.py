@@ -28,7 +28,9 @@ from traceback import print_exc
 # to still run even if one of the modules has an error.
 
 try:
+    # Uncomment the next line to use the test file.
     import Examples.post_import_texture2D_settings
+    pass
 except Exception as err:
     log_error("Plugin Importer Rules failed to initialize.")
     print_exc()

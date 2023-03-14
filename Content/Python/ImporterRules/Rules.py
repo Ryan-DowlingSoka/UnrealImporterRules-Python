@@ -30,13 +30,17 @@ from traceback import format_exc
 class ImportRuleBase(ABC):
     """Base class for rules, to be applied """
 
+    def __init__(self, apply_on_reimport:bool=False) -> None:
+        self.apply_on_reimport = apply_on_reimport
+
     def apply(self, factory: unreal.Factory, created_object: unreal.Object) -> bool:
         raise NotImplemented
     
 class Rule(ImportRuleBase):
     """Import Rule class to apply actions if designated queries are true."""
 
-    def __init__(self, queries:List[QueryBase], actions:List[ImportActionBase], requires_all:bool=False) -> None:
+    def __init__(self, queries:List[QueryBase], actions:List[ImportActionBase], requires_all:bool=False, apply_on_reimport:bool=False) -> None:
+        super().__init__(apply_on_reimport)
         self.queries = queries
         self.actions = actions
         self.requires_all = requires_all
