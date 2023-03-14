@@ -29,7 +29,7 @@ from traceback import print_exc
 
 try:
     # Uncomment the next line to use the test file.
-    import Examples.post_import_texture2D_settings
+    # import Examples.post_import_texture2D_settings
     pass
 except Exception as err:
     log_error("Plugin Importer Rules failed to initialize.")
