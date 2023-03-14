@@ -7,8 +7,8 @@ from ImporterRules import *
 import unreal
 
 importer_rules_manager.register_rules(
-    unreal.Texture2D,
-    [
+    class_type = unreal.Texture2D,
+    rules = [
         # The first rule is simple, it takes any textures ending with _n and applies the flip_green_channel property as false.
         # You might do something like this if you want to switch from DirectX to OpenGL normals.
         # There is only one rule, so the requires_all parameter is irrelevant.
