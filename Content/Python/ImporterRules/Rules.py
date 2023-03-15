@@ -48,12 +48,13 @@ class Rule(ImportRuleBase):
     def apply(self, factory: unreal.Factory, created_object: unreal.Object) -> bool:
         results = [query.test(factory, created_object) for query in self.queries]
 
-        if self.requires_all:
-            if not all(results):
-                return False
-        else:
-            if not any(results):
-                return False
+        if len(results) > 0:
+            if self.requires_all:
+                if not all(results):
+                    return False
+            else:
+                if not any(results):
+                    return False
 
         try:
             action_results = [action.apply(factory, created_object) for action in self.actions]
