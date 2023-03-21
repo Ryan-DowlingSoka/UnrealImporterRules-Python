@@ -215,6 +215,8 @@ If you'd like to build your own system you could either bind your rules directly
 
 ## Notes
 
+* There is a native C++ and Blueprints version of this pattern available at [https://github.com/Ryan-DowlingSoka/UnrealImporterRules-CPP](https://github.com/Ryan-DowlingSoka/UnrealImporterRules-CPP)
+
 * The Unreal Python Path is set at each `/Python/` folder in each plugin and the project. As such, modules inside of modules such as `/Python/ImporterRules/.../` folders need to reference their siblings with `import ImporterRules.{{ModuleName}}`
 
 * The `ImporterRules` imports all the queries and action classes, so you can use `from ImporterRules import *` as a handy shorthand to get the classes you need. If you make additional queries or actions, you should either put them in this file or just remember to import them manually.
