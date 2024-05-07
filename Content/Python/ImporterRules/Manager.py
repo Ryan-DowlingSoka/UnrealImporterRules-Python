@@ -31,9 +31,9 @@ class ImporterRulesManager(object):
     """Manager class to make it easier to add importer rules registrations."""
 
     def __init__(self) -> None:
-        import_subsystem = unreal.get_editor_subsystem(unreal.ImportSubsystem)
-        if import_subsystem:
-            import_subsystem.on_asset_post_import.add_callable(
+        self.import_subsystem = unreal.get_editor_subsystem(unreal.ImportSubsystem)
+        if self.import_subsystem:
+            self.import_subsystem.on_asset_post_import.add_callable(
                 self.on_asset_post_import
             )
         self._rules: Dict[type, List[ImportRuleBase]] = {}
